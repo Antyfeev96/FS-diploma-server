@@ -1,0 +1,4 @@
+{
+  "port": 7070,
+  "MongoURI": "mongodb+srv://Antyfeev96:SEK08121996i@fs-diploma.la1pi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+}
