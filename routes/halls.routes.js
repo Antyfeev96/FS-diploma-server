@@ -18,7 +18,6 @@ router.get(
         }
 
         const halls = await Hall.find()
-        
 
         if (!halls) {
             res.status(400).json({"message": "Список залов пуст"})
