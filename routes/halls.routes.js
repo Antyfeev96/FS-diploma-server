@@ -2,6 +2,8 @@ const {Router} = require('express');
 const {validationResult} = require('express-validator');
 const Hall = require('../models/Hall');
 const router = Router();
+const auth = require('../middleware/auth.middleware')
+const config = require('config')
 
 // /halls
 router.get(
@@ -26,6 +28,33 @@ router.get(
             setTimeout(() => {
                 res.status(201).json({
                     "message": "Список залов получен",
+                    "halls": JSON.stringify(halls)
+                })
+            }, 2000)
+        } catch (e) {
+            res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
+        }
+    }
+)
+
+router.post(
+    '/halls',
+    async (req, res) => {
+        try {
+            const { name } = req.body
+
+            const rows = Array(8).fill(null).map(() => Array(8).fill('standart'))
+
+            const hall = new Hall({
+                name, rows, checked: false
+            })
+
+            await hall.save()
+            const halls = await Hall.find()
+
+            setTimeout(() => {
+                res.status(201).json({
+                    "message": "Список залов обновлён",
                     "halls": JSON.stringify(halls)
                 })
             }, 2000)
