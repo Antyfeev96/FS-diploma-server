@@ -41,7 +41,7 @@ router.post(
     '/halls',
     async (req, res) => {
         try {
-            const { name } = req.body
+            const {name} = req.body
 
             const rows = Array(8).fill(null).map(() => Array(8).fill('standart'))
 
@@ -59,6 +59,52 @@ router.post(
                 })
             }, 2000)
         } catch (e) {
+            res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
+        }
+    }
+)
+
+router.patch(
+    '/halls/:id',
+    async (req, res) => {
+        try {
+            const {row, place, status} = req.body;
+
+            // Вариант №1
+            // const hallToUpdate = await Hall.findById(req.params.id)
+            // hallToUpdate.rows[row][place] = status;
+            // await hallToUpdate.save();
+            // res.status(201)......
+
+            //Вариант №2
+            // Hall.findOne({id: req.params.id}).then(async (hall) => {
+            //     hall.rows[row][place] = status
+            //     await hall.save()
+            // }).then(async () => {
+            //     const halls = await Hall.find()
+            //     setTimeout(() => {
+            //         res.status(201).json({
+            //             // "message": `В зале ${hall.name} было изменено место ${place} в ряду ${row}, новый статус: ${status}`,
+            //             "halls": JSON.stringify(halls)
+            //         })
+            //     }, 2000)
+            // }).catch(err => {
+            //     console.log(err)
+            // });
+
+            // Вариант №3
+            // const halls = await Hall.find()
+            // const hall = halls.find(hall => hall.id === req.params.id)
+            // hall.rows[row][place] = status
+            // await halls.save() тут выдает ошибку, что halls.save() is not a function
+
+
+            // if (!halls) {
+            //     res.status(400).json({"message": "Список залов пуст"})
+            // }
+            //
+        } catch (e) {
+            console.log(e.message)
             res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
         }
     }
