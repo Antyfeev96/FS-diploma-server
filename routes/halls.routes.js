@@ -45,8 +45,13 @@ router.post(
 
             const rows = Array(8).fill(null).map(() => Array(8).fill('standart'))
 
+            const prices = {
+                standart: 350,
+                vip: 700
+            }
+
             const hall = new Hall({
-                name, rows, checked: false
+                name, rows, prices, checked: false
             })
 
             await hall.save()
