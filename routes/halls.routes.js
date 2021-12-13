@@ -75,39 +75,31 @@ router.patch(
         try {
             const {row, place, status} = req.body;
 
-            // Вариант №1
-            // const hallToUpdate = await Hall.findById(req.params.id)
-            // hallToUpdate.rows[row][place] = status;
-            // await hallToUpdate.save();
-            // res.status(201)......
+            const hallToUpdate = await Hall.findById(req.params.id)
+            const { rows } = hallToUpdate
 
-            //Вариант №2
-            // Hall.findOne({id: req.params.id}).then(async (hall) => {
-            //     hall.rows[row][place] = status
-            //     await hall.save()
-            // }).then(async () => {
-            //     const halls = await Hall.find()
-            //     setTimeout(() => {
-            //         res.status(201).json({
-            //             // "message": `В зале ${hall.name} было изменено место ${place} в ряду ${row}, новый статус: ${status}`,
-            //             "halls": JSON.stringify(halls)
-            //         })
-            //     }, 2000)
-            // }).catch(err => {
-            //     console.log(err)
-            // });
+            await Hall.findByIdAndUpdate(req.params.id, {
+                rows: [
+                  ...rows.slice(0, row),
+                  [
+                    ...rows[row].slice(0, place),
+                    status,
+                      ...rows[row].slice(place + 1)
+                  ],
+                  ...rows.slice(row + 1)
+                ]
+            })
 
-            // Вариант №3
-            // const halls = await Hall.find()
-            // const hall = halls.find(hall => hall.id === req.params.id)
-            // hall.rows[row][place] = status
-            // await halls.save() тут выдает ошибку, что halls.save() is not a function
+            const halls = await Hall.find()
 
+            if (!halls) {
+                res.status(400).json({"message": "Список залов пуст"})
+            }
 
-            // if (!halls) {
-            //     res.status(400).json({"message": "Список залов пуст"})
-            // }
-            //
+            res.send({
+                "message": "Зал изменён, список залов обновлён",
+                "halls": JSON.stringify(halls)
+            })
         } catch (e) {
             console.log(e.message)
             res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
