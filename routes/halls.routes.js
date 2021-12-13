@@ -76,25 +76,49 @@ router.patch(
             const {row, place, status} = req.body;
 
             const hallToUpdate = await Hall.findById(req.params.id)
-            const { rows } = hallToUpdate
+
+            if (!hallToUpdate) {
+                res.status(400).json({"message": "Зал с данным id не найден"})
+            }
+
+            const {rows} = hallToUpdate
 
             await Hall.findByIdAndUpdate(req.params.id, {
                 rows: [
-                  ...rows.slice(0, row),
-                  [
-                    ...rows[row].slice(0, place),
-                    status,
-                      ...rows[row].slice(place + 1)
-                  ],
-                  ...rows.slice(row + 1)
+                    ...rows.slice(0, row),
+                    [
+                        ...rows[row].slice(0, place),
+                        status,
+                        ...rows[row].slice(place + 1)
+                    ],
+                    ...rows.slice(row + 1)
                 ]
             })
 
             const halls = await Hall.find()
 
-            if (!halls) {
-                res.status(400).json({"message": "Список залов пуст"})
-            }
+            res.send({
+                "message": "Зал изменён, список залов обновлён",
+                "halls": JSON.stringify(halls)
+            })
+        } catch (e) {
+            console.log(e.message)
+            res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
+        }
+    }
+)
+
+router.put(
+    '/halls/:id',
+    async (req, res) => {
+        try {
+            const {rows} = req.body;
+
+            await Hall.findByIdAndUpdate(req.params.id, {
+                rows: rows
+            })
+
+            const halls = await Hall.find()
 
             res.send({
                 "message": "Зал изменён, список залов обновлён",
