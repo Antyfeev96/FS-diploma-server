@@ -131,6 +131,29 @@ router.put(
     }
 )
 
+router.put(
+    '/halls/:id/prices',
+    async (req, res) => {
+        try {
+            const {prices} = req.body;
+
+            await Hall.findByIdAndUpdate(req.params.id, {
+                prices: prices
+            })
+
+            const halls = await Hall.find()
+
+            res.send({
+                "message": "Цены на билет изменены, список залов обновлён",
+                "halls": JSON.stringify(halls)
+            })
+        } catch (e) {
+            console.log(e.message)
+            res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
+        }
+    }
+)
+
 router.delete(
     '/halls/:id',
     async (req, res) => {
