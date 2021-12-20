@@ -15,6 +15,7 @@ app.use(express.json({ extended: true }))
 
 app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/', require('./routes/halls.routes'))
+app.use('/', require('./routes/films.routes'))
 
 const PORT = config.get('port') || 7070;
 

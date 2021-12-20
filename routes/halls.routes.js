@@ -58,13 +58,13 @@ router.post(
             const halls = await Hall.find()
 
             setTimeout(() => {
-                res.status(201).json({
+                res.send({
                     "message": "Зал добавлен, список залов обновлён",
                     "halls": JSON.stringify(halls)
                 })
             }, 2000)
         } catch (e) {
-            res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
+            res.status(500).json({"message": e})
         }
     }
 )
