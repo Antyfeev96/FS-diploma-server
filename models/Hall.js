@@ -6,7 +6,9 @@ const schema = new Schema({
     name: { type: String, required: true, unique: true },
     rows: { type: Array, required: true },
     checked: { type: Boolean, required: true },
-    prices: { type: Object, required: true }
+    prices: { type: Object, required: true },
+    sessions: { type: Object, required: true },
+    isTicketSalesOpen: { type: Boolean, default: false, required: true}
 });
 
 module.exports = model('Hall', schema)

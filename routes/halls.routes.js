@@ -50,8 +50,20 @@ router.post(
                 vip: 700
             }
 
+            const sessions = {
+                '8:00': '',
+                '10:00': '',
+                '12:00': '',
+                '14:00': '',
+                '16:00': 'Убийство в Вегасе',
+                '18:00': '',
+                '20:00': '',
+                '22:00': '',
+                '0:00': ''
+            }
+
             const hall = new Hall({
-                name, rows, prices, checked: false
+                name, rows, prices, checked: false, sessions
             })
 
             await hall.save()
