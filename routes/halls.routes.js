@@ -121,6 +121,28 @@ router.post(
 )
 
 router.patch(
+    '/halls/activate',
+    async (req, res) => {
+        try {
+            await Hall.updateMany({}, {
+                isTicketSalesOpen: true
+            })
+
+            const halls = await Hall.find()
+
+            setTimeout(() => {
+                res.status(201).json({
+                    "message": "Продажи билетов активированы, список залов обновлён",
+                    "halls": halls
+                })
+            }, 2000)
+        } catch (e) {
+            res.status(500).json({"message":  e.message})
+        }
+    }
+)
+
+router.patch(
     '/halls/:id',
     async (req, res) => {
         try {

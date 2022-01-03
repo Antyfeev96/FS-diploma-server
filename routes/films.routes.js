@@ -73,9 +73,11 @@ router.post(
     '/films',
     async (req, res) => {
         try {
-            const { name, description } = req.body
+            const { name } = req.body
 
             const duration = 120
+
+            const description = 'Классный фильм!'
 
             const film = new Film({
                 name, description, duration
