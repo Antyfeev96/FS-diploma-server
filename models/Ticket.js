@@ -6,7 +6,7 @@ const schema = new Schema({
     hall: { type: String, required: true },
     row: { type: Number, required: true },
     place: { type: Number, required: true },
-    session: { type: Object, required: true }
+    session: { type: String, required: true }
 });
 
 module.exports = model('Ticket', schema)

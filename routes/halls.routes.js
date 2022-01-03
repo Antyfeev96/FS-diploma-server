@@ -28,7 +28,46 @@ router.get(
             setTimeout(() => {
                 res.status(201).json({
                     "message": "Список залов получен",
-                    "halls": JSON.stringify(halls)
+                    "halls": halls
+                })
+            }, 2000)
+        } catch (e) {
+            res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
+        }
+    }
+)
+
+router.get(
+    '/halls/slots/:id',
+    async (req, res) => {
+        try {
+            const { id } = req.params
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    errors: errors.array(),
+                    message: "Ошибка при попытке получения всех залов"
+                })
+            }
+
+            const { sessions } = await Hall.findById(id)
+
+            if (!sessions) {
+                res.status(400).json({"message": "У зала нет сеансов"})
+            }
+
+            let emptySlots = {}
+
+            Object.entries(sessions).map(([key, value]) => {
+                if (value !== '') return;
+                emptySlots[key] = value
+            })
+
+            setTimeout(() => {
+                res.status(201).json({
+                    "message": "Список временных слотов зала получен",
+                    "sessions": emptySlots
                 })
             }, 2000)
         } catch (e) {
@@ -72,7 +111,7 @@ router.post(
             setTimeout(() => {
                 res.send({
                     "message": "Зал добавлен, список залов обновлён",
-                    "halls": JSON.stringify(halls)
+                    "halls": halls
                 })
             }, 2000)
         } catch (e) {
@@ -111,7 +150,7 @@ router.patch(
 
             res.send({
                 "message": "Зал изменён, список залов обновлён",
-                "halls": JSON.stringify(halls)
+                "halls": halls
             })
         } catch (e) {
             console.log(e.message)
@@ -134,7 +173,7 @@ router.put(
 
             res.send({
                 "message": "Зал изменён, список залов обновлён",
-                "halls": JSON.stringify(halls)
+                "halls": halls
             })
         } catch (e) {
             console.log(e.message)
@@ -157,7 +196,7 @@ router.put(
 
             res.send({
                 "message": "Цены на билет изменены, список залов обновлён",
-                "halls": JSON.stringify(halls)
+                "halls": halls
             })
         } catch (e) {
             console.log(e.message)
@@ -177,7 +216,7 @@ router.delete(
             setTimeout(() => {
                 res.status(201).json({
                     "message": "Зал удалён, список залов обновлён",
-                    "halls": JSON.stringify(halls)
+                    "halls": halls
                 })
             }, 2000)
         } catch (e) {
