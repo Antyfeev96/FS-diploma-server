@@ -44,9 +44,8 @@ router.get(
 
             const result = sessions
                 .filter(session => session.film._id === id)
-        
+
             result.forEach(item => {
-                console.log(item);
                 if (!halls[item.hall._id]) {
                     halls[item.hall._id] = []
                 }

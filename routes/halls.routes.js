@@ -93,11 +93,11 @@ router.get(
             const hall = await Hall.findById(id)
 
             if (!hall) {
-                res.status(400).json({"message": " Зал с таким id не найден"})
+                res.status(400).json({"message": `Зал с ID ${id} не найден`})
             }
 
             setTimeout(() => {
-                res.status(201).json({
+                res.status(200).json({
                     "message": `Зал ${id} получен`,
                     "hall": hall
                 })
