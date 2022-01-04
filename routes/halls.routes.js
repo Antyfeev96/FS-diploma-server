@@ -76,6 +76,38 @@ router.get(
     }
 )
 
+router.get(
+    '/halls/:id',
+    async (req, res) => {
+        try {
+            const { id } = req.params
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    errors: errors.array(),
+                    message: "Ошибка при попытке получения зала по ID"
+                })
+            }
+
+            const hall = await Hall.findById(id)
+
+            if (!hall) {
+                res.status(400).json({"message": " Зал с таким id не найден"})
+            }
+
+            setTimeout(() => {
+                res.status(201).json({
+                    "message": `Зал ${id} получен`,
+                    "hall": hall
+                })
+            }, 2000)
+        } catch (e) {
+            res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
+        }
+    }
+)
+
 router.post(
     '/halls',
     async (req, res) => {

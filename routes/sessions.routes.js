@@ -43,15 +43,15 @@ router.get(
             let halls = {}
 
             const result = sessions
-                .filter(session => session.film === id)
-
-            result.reduce((_, item) => {
-                if (!halls[item.hall]) {
-                    halls[item.hall] = []
+                .filter(session => session.film._id === id)
+        
+            result.forEach(item => {
+                console.log(item);
+                if (!halls[item.hall._id]) {
+                    halls[item.hall._id] = []
                 }
-                halls[item.hall].push(item.start_time)
+                halls[item.hall._id].push(item.start_time)
             })
-
 
             Object.values(halls).map(hall => {
                 hall.sort((a,b) => {
@@ -118,7 +118,6 @@ router.post(
             await session.save()
 
             const updatingHall = await Hall.findById(hall._id)
-
             const newSessions = Object.assign({}, updatingHall.sessions, { [start_time]: film.name })
 
             await Hall.findByIdAndUpdate(hall._id, {
