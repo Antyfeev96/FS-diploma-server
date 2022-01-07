@@ -17,6 +17,7 @@ app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/', require('./routes/halls.routes'))
 app.use('/', require('./routes/films.routes'))
 app.use('/', require('./routes/sessions.routes'))
+app.use('/', require('./routes/ticket.routes'))
 
 const PORT = config.get('port') || 7070;
 
