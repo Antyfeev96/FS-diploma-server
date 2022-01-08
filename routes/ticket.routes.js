@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const {validationResult} = require('express-validator');
 const Ticket = require('../models/Ticket');
+const Hall = require('../models/Hall');
 const router = Router();
 
 router.get(
@@ -79,6 +80,29 @@ router.post(
             await ticket.save()
             const tickets = await Ticket.find()
 
+            for (const { row, place } of seats) {
+                const hallToUpdate = await Hall.findById(hallId)
+                console.log({hallToUpdate})
+
+                if (!hallToUpdate) {
+                    res.status(400).json({"message": "Зал с данным id не найден"})
+                }
+
+                const {rows} = hallToUpdate
+
+                await Hall.findByIdAndUpdate(hallId, {
+                    rows: [
+                        ...rows.slice(0, row),
+                        [
+                            ...rows[row].slice(0, place),
+                            'disabled',
+                            ...rows[row].slice(place + 1)
+                        ],
+                        ...rows.slice(row + 1)
+                    ]
+                });
+            }
+
             setTimeout(() => {
                 res.send({
                     "message": "Билет добавлен, список билетов обновлён",
@@ -95,6 +119,30 @@ router.delete(
     '/tickets/:id',
     async (req, res) => {
         try {
+            const { seats, hall } = await Ticket.findById(req.params.id)
+
+            for (const { row, place } of seats) {
+                const hallToUpdate = await Hall.findById(hall)
+
+                if (!hallToUpdate) {
+                    res.status(400).json({"message": "Зал с данным id не найден"})
+                }
+
+                const {rows} = hallToUpdate
+
+                await Hall.findByIdAndUpdate(hall, {
+                    rows: [
+                        ...rows.slice(0, row),
+                        [
+                            ...rows[row].slice(0, place),
+                            'standart',
+                            ...rows[row].slice(place + 1)
+                        ],
+                        ...rows.slice(row + 1)
+                    ]
+                });
+            }
+
             await Ticket.findByIdAndDelete(req.params.id)
 
             const tickets = await Ticket.find()
