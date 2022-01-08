@@ -78,7 +78,6 @@ router.post(
             })
 
             await ticket.save()
-            const tickets = await Ticket.find()
 
             for (const { row, place } of seats) {
                 const hallToUpdate = await Hall.findById(hallId)
@@ -106,7 +105,7 @@ router.post(
             setTimeout(() => {
                 res.send({
                     "message": "Билет добавлен, список билетов обновлён",
-                    "tickets": tickets
+                    "ticket": ticket
                 })
             }, 2000)
         } catch (e) {
