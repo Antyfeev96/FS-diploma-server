@@ -81,7 +81,6 @@ router.post(
 
             for (const { row, place } of seats) {
                 const hallToUpdate = await Hall.findById(hallId)
-                console.log({hallToUpdate})
 
                 if (!hallToUpdate) {
                     res.status(400).json({"message": "Зал с данным id не найден"})

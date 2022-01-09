@@ -207,7 +207,6 @@ router.patch(
                 "halls": halls
             })
         } catch (e) {
-            console.log(e.message)
             res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
         }
     }
@@ -230,7 +229,6 @@ router.put(
                 "halls": halls
             })
         } catch (e) {
-            console.log(e.message)
             res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
         }
     }
@@ -253,7 +251,6 @@ router.put(
                 "halls": halls
             })
         } catch (e) {
-            console.log(e.message)
             res.status(500).json({"message": "Что-то пошло не так, попробуйте ещё раз."})
         }
     }
