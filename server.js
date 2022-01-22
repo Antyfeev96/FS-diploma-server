@@ -19,7 +19,7 @@ app.use('/', require('./routes/films.routes'))
 app.use('/', require('./routes/sessions.routes'))
 app.use('/', require('./routes/ticket.routes'))
 
-const PORT = config.get('port') ? config.get('port') : 7070;
+const { PORT = 7070, LOCAL_ADDRESS = '0.0.0.0' } = process.env
 
 const start = async () => {
   try {
@@ -27,7 +27,7 @@ const start = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    app.listen(PORT || 7070, '0.0.0.0', () => console.log(`App is started on port ${PORT || 7070}...`))
+    app.listen(PORT || 7070, LOCAL_ADDRESS, () => console.log(`App is started on port ${PORT || 7070}...`))
   } catch (e) {
     console.log(`Server error is ${e}`);
     process.exit(1);
