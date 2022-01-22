@@ -19,7 +19,7 @@ app.use('/', require('./routes/films.routes'))
 app.use('/', require('./routes/sessions.routes'))
 app.use('/', require('./routes/ticket.routes'))
 
-const PORT = config.get('port') || 7070;
+const PORT = config.get('port') ? config.get('port') : 7070;
 
 const start = async () => {
   try {
